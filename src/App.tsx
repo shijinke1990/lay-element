@@ -1,24 +1,35 @@
 import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
+import Button, { ButtonType, ButtonSize } from "components/Button/Button";
 
 function App() {
     return (
         <div className="App">
-            <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-                <p>
-                    Edit <code>src/App.tsx</code> and save to reload.
-                </p>
-                <a
-                    className="App-link"
-                    href="https://reactjs.org"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Learn React
-                </a>
-            </header>
+            <Button
+                onClick={() => {
+                    console.log("click");
+                }}
+            >
+                click
+            </Button>
+            <Button disabled>施锦科</Button>
+            <Button buttonType={ButtonType.Primary}>施锦科</Button>
+            <Button buttonType={ButtonType.Link}>施锦科</Button>
+            <Button
+                disabled
+                buttonType={ButtonType.Primary}
+                size={ButtonSize.Large}
+            >
+                dc disabled
+            </Button>
+            <Button
+                autoFocus
+                buttonType={ButtonType.Danger}
+                size={ButtonSize.Small}
+            >
+                施锦科
+            </Button>
         </div>
     );
 }
