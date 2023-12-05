@@ -1,0 +1,38 @@
+.lay__menu {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    padding-left: 0;
+
+
+    .lay__menu-item {
+        padding: 12px;
+        user-select: none;
+        width: 120px;
+
+        a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        &--active {
+            border-bottom: 1px solid cadetblue;
+            ;
+
+            a {
+                color: cadetblue;
+            }
+        }
+
+        &--disabled {
+            cursor: not-allowed;
+
+            a {
+
+                opacity: 0.65;
+                pointer-events: none;
+            }
+
+        }
+    }
+}
