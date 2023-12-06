@@ -1,37 +1,44 @@
-import React, { Children, createContext, useState } from "react";
+import React, { createContext, useState } from "react";
 import classNames from "classnames";
-import { MenuItemProps } from "./MenuItem";
 import "./Menu.scss";
+import { MenuItemProps } from "./MenuItem";
 
-type MenuMode = "horizontal" | "vertical";
+export type MenuMode = "horizontal" | "vertical";
 
-type MenuProps = {
-    mode?: MenuMode;
-    children?: React.ReactNode;
+export type MenuProps = {
+    defaultIndex?: string;
     className?: string;
     style?: React.CSSProperties;
-    onSelect: (index: number) => void;
-    defaultIndex?: number;
+    defaultOpenSubMenus?: string[];
+    onSelect?: (index: string) => void;
+    mode?: MenuMode;
+    children?: React.ReactNode;
 };
 
-type MenuContextProps = {
-    activeIndex?: number;
-    onItemClick?: (index: number) => void;
+export type MenuContextProps = {
+    activeIndex: string;
+    defaultOpenSubMenus?: string[];
+    onItemClick?: (index: string) => void;
+    mode?: MenuMode;
 };
 
 export const MenuContext = createContext<MenuContextProps>({
-    activeIndex: 0,
+    activeIndex: "0",
 });
 
-const Menu: React.FC<MenuProps> = ({ mode, children, className, style, onSelect, defaultIndex }) => {
+const Menu: React.FC<MenuProps> = ({ defaultIndex, children, className, style, defaultOpenSubMenus, onSelect, mode }) => {
     const [active, setActive] = useState(defaultIndex);
-    const MenuContextValue: MenuContextProps = {
-        activeIndex: active || 0,
+    const menuContextValue: MenuContextProps = {
+        activeIndex: active || "0",
+        mode,
         onItemClick: (index) => {
             console.log(index);
             setActive(index);
-            onSelect(index);
+            if (onSelect) {
+                onSelect(index);
+            }
         },
+        defaultOpenSubMenus,
     };
 
     const classes = classNames("lay__menu", {
@@ -40,11 +47,11 @@ const Menu: React.FC<MenuProps> = ({ mode, children, className, style, onSelect,
     });
 
     const renderChildren = () => {
-        return Children.map(children, (child, index) => {
+        return React.Children.map(children, (child, index) => {
             const childElement = child as React.FunctionComponentElement<MenuItemProps>;
-            if (childElement.type.displayName === "MenuItem") {
+            if (childElement.type.displayName === "MenuItem" || childElement.type.displayName === "SubMenu") {
                 return React.cloneElement(childElement, {
-                    index,
+                    index: index.toString(),
                 });
             }
             console.error("Menu组件内只能插入MenuItem");
@@ -53,14 +60,15 @@ const Menu: React.FC<MenuProps> = ({ mode, children, className, style, onSelect,
 
     return (
         <ul className={classes} style={style}>
-            <MenuContext.Provider value={MenuContextValue}>{renderChildren()}</MenuContext.Provider>
+            <MenuContext.Provider value={menuContextValue}>{renderChildren()}</MenuContext.Provider>
         </ul>
     );
 };
 
 Menu.defaultProps = {
     mode: "horizontal",
-    defaultIndex: 0,
+    defaultIndex: "0",
+    defaultOpenSubMenus: [],
 };
 
 export default Menu;

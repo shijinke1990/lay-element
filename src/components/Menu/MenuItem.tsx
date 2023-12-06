@@ -3,27 +3,31 @@ import classNames from "classnames";
 import { MenuContext } from "./Menu";
 
 export type MenuItemProps = {
-    index?: number;
-    className?: string;
-    style?: React.CSSProperties;
+    index?: string;
     disabled?: boolean;
-    children?: React.ReactNode;
+    style?: React.CSSProperties;
+    children: React.ReactNode;
+    className?: string;
 };
 
-const MenuItem: React.FC<MenuItemProps> = ({ index, className, style, disabled, children }: MenuItemProps) => {
-    const menuContext = useContext(MenuContext);
+const MenuItem: React.FC<MenuItemProps> = ({ index, disabled, style, children, className }: MenuItemProps) => {
+    const context = useContext(MenuContext);
     const classes = classNames("lay__menu-item", {
-        "lay__menu-item--active": index === menuContext.activeIndex,
+        "lay__menu-item--active": context.activeIndex === index,
         "lay__menu-item--disabled": disabled,
         className,
     });
 
-    const handleClick = () => {
+    const handleClick = (e: React.MouseEvent) => {
+        e.preventDefault();
+        console.log(index, context);
         if (disabled) return;
-        if (menuContext.onItemClick && typeof index === "number") {
-            menuContext.onItemClick(index);
+        if (context.onItemClick && typeof index === "string") {
+            context.onItemClick(index);
+            console.log(index);
         }
     };
+
     return (
         <li className={classes} style={style} onClick={handleClick}>
             {children}

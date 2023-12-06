@@ -1,38 +1,120 @@
 .lay__menu {
     display: flex;
     flex-wrap: wrap;
-    list-style: none;
     padding-left: 0;
 
-
     .lay__menu-item {
-        padding: 12px;
+
         user-select: none;
-        width: 120px;
+
+        list-style: none;
+
+
 
         a {
             color: #333;
             text-decoration: none;
         }
 
-        &--active {
-            border-bottom: 1px solid cadetblue;
-            ;
 
-            a {
-                color: cadetblue;
-            }
-        }
 
         &--disabled {
             cursor: not-allowed;
 
             a {
-
                 opacity: 0.65;
                 pointer-events: none;
             }
 
         }
     }
+
+    &--horizontal {
+        display: flex;
+
+        .lay__menu-item {
+            width: 80px;
+            padding: 12px;
+
+            &--active {
+                a {
+                    color: cadetblue;
+                }
+
+                border-bottom: 1px solid cadetblue;
+            }
+        }
+
+        .lay__submenu {
+            position: relative;
+            padding-left: 0;
+            list-style: none;
+
+            &-title {
+                cursor: pointer;
+                padding: 12px;
+            }
+
+            &-list {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding-left: 0;
+                position: absolute;
+                width: 80px;
+
+            }
+
+
+        }
+
+        .lay__submenu--opened {
+            display: block;
+        }
+
+    }
+
+    &--vertical {
+        display: flex;
+        flex-direction: column;
+        width: 120px;
+        align-items: flex-start;
+        padding: 12px 20px;
+        list-style: none;
+
+
+        .lay__menu-item {
+            padding: 12px 0;
+            text-indent: 12px;
+
+            &--active {
+                a {
+                    color: cadetblue;
+                }
+
+                border-left: 2px solid cadetblue;
+
+            }
+        }
+
+        .lay__submenu {
+            margin: 12px 0;
+            padding-left: 0;
+            cursor: pointer;
+
+            &-list {
+                padding-left: 12px;
+                margin-top: 20px;
+            }
+
+
+        }
+
+
+    }
+
+
+
+
+
 }
